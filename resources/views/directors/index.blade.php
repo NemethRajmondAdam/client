@@ -16,14 +16,14 @@
         
 
         <!-- Search Field -->
-        @include('layouts.search', ['route' => 'directors.search'])
+        @include('layouts.search', ['action' => 'directors.index'])
 
         <!-- Data Table -->
         <table class="table">
             <thead>
                 <tr>
                     <!-- Dynamic Table Headers -->
-                                            <th>{{ __('directors.name') }}</th>
+                    <th>{{ __('directors.name') }}</th>
                     <th>{{ __('skeletons.actions') }}</th>
                 </tr>
             </thead>
@@ -31,13 +31,12 @@
                 @foreach ($directors as $director)
                     <tr>
                         <!-- Dynamic Table Columns -->
-                                                <td>{{ $director->name }}</td>
+                        <td>{{ $director['name'] }}</td>
                         <!-- Action Buttons -->
                         <td>
-                            <a href="{{ route('directors.show', $director) }}" class="btn">{{ __('skeletons.show') }}</a>
                             
-                            <a href="{{ route('directors.edit', $director) }}" class="btn">{{ __('skeletons.edit') }}</a>
-                            <form action="{{ route('directors.destroy', $director) }}" method="POST" style="display:inline-block;">
+                            <a href="{{ route('directors.edit', $director['id']) }}" class="btn">{{ __('skeletons.edit') }}</a>
+                            <form action="{{ route('directors.destroy', $director['id']) }}" method="POST" style="display:inline-block;">
                                 @csrf
                                 @method('DELETE')
                                 <button type="submit" class="btn btn-danger">{{ __('skeletons.delete') }}</button>
@@ -51,7 +50,7 @@
 
         <!-- Pagination Links -->
         <div class="pagination">
-            {{ $directors->links() }}
+
         </div>
     </div>
 @endsection

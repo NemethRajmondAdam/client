@@ -16,14 +16,14 @@
         
 
         <!-- Search Field -->
-        @include('layouts.search', ['route' => 'categories.search'])
+        @include('layouts.search', ['action' => 'categories.index'])
 
         <!-- Data Table -->
         <table class="table">
             <thead>
                 <tr>
                     <!-- Dynamic Table Headers -->
-                                            <th>{{ __('categories.category') }}</th>
+                    <th>{{ __('categories.category') }}</th>
                     <th>{{ __('skeletons.actions') }}</th>
                 </tr>
             </thead>
@@ -31,13 +31,12 @@
                 @foreach ($categories as $category)
                     <tr>
                         <!-- Dynamic Table Columns -->
-                                                <td>{{ $category->category }}</td>
+                        <td>{{ $category['category'] }}</td>
                         <!-- Action Buttons -->
                         <td>
-                            <a href="{{ route('categories.show', $category) }}" class="btn">{{ __('skeletons.show') }}</a>
                             
-                            <a href="{{ route('categories.edit', $category) }}" class="btn">{{ __('skeletons.edit') }}</a>
-                            <form action="{{ route('categories.destroy', $category) }}" method="POST" style="display:inline-block;">
+                            <a href="{{ route('categories.edit', $category['id']) }}" class="btn">{{ __('skeletons.edit') }}</a>
+                            <form action="{{ route('categories.destroy', $category['id']) }}" method="POST" style="display:inline-block;">
                                 @csrf
                                 @method('DELETE')
                                 <button type="submit" class="btn btn-danger">{{ __('skeletons.delete') }}</button>
@@ -51,7 +50,7 @@
 
         <!-- Pagination Links -->
         <div class="pagination">
-            {{ $categories->links() }}
+
         </div>
     </div>
 @endsection

@@ -15,7 +15,7 @@ class AuthenticatedSessionController extends Controller
     /**
      * Display the login view.
      */
-    public function create(): View
+    public function create()
     {
         return view('auth.login');
     }
@@ -25,22 +25,23 @@ class AuthenticatedSessionController extends Controller
      */
     public function store(LoginRequest $request): RedirectResponse
     {
-        $response = Http::api()->post('/user/login', [
+        $response = Http::api()->post('/users/login',[
+        /*$response = Http::post('http://localhost:8000/api/users/login', [*/
             'email' => $request->email,
             'password' => $request->password,
         ]);
 
         if ($response->successful()) {
 			// elmentjük a bejelentkezési adatokat a session-be.
-            $token = $response['token']; 
+             
             $user = $response['user'];
+            $token = $user['token'];
             session([
                 'api_token' => $token,
-                'user_name' => $user['name'],
 				'user_email' => $user['email'],
             ]);
 
-            return redirect()->intended('/');
+            return redirect(route("movies.index"));
         }
 
         return back()->withErrors([
@@ -48,7 +49,7 @@ class AuthenticatedSessionController extends Controller
         ]);
     }
 	
-	public function destroy(Request $request): RedirectResponse
+	public function destroy(Request $request)
     {
         session()->forget('api_token');
 

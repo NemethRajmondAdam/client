@@ -16,14 +16,14 @@
         
 
         <!-- Search Field -->
-        @include('layouts.search', ['route' => 'actors.search'])
+        @include('layouts.search', ['action' => 'actors.index'])
 
         <!-- Data Table -->
         <table class="table">
             <thead>
                 <tr>
                     <!-- Dynamic Table Headers -->
-                                            <th>{{ __('actors.name') }}</th>
+                        <th>{{ __('actors.name') }}</th>
                         <th>{{ __('actors.gender') }}</th>
                     <th>{{ __('skeletons.actions') }}</th>
                 </tr>
@@ -32,14 +32,14 @@
                 @foreach ($actors as $actor)
                     <tr>
                         <!-- Dynamic Table Columns -->
-                                                <td>{{ $actor->name }}</td>
-                        <td>{{ $actor->gender }}</td>
+                        <td>{{ $actor['name'] }}</td>
+                        <td>{{ $actor['gender'] }}</td>
                         <!-- Action Buttons -->
                         <td>
-                            <a href="{{ route('actors.show', $actor) }}" class="btn">{{ __('skeletons.show') }}</a>
+                           
                             
-                            <a href="{{ route('actors.edit', $actor) }}" class="btn">{{ __('skeletons.edit') }}</a>
-                            <form action="{{ route('actors.destroy', $actor) }}" method="POST" style="display:inline-block;">
+                            <a href="{{ route('actors.edit', $actor['id']) }}" class="btn">{{ __('skeletons.edit') }}</a>
+                            <form action="{{ route('actors.destroy', $actor['id']) }}" method="POST" style="display:inline-block;">
                                 @csrf
                                 @method('DELETE')
                                 <button type="submit" class="btn btn-danger">{{ __('skeletons.delete') }}</button>
@@ -53,7 +53,7 @@
 
         <!-- Pagination Links -->
         <div class="pagination">
-            {{ $actors->links() }}
+
         </div>
     </div>
 @endsection

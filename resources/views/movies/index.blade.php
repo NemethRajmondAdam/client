@@ -3,7 +3,7 @@
 @section('content')
     <div class="container">
         <!-- Page Title -->
-        <h1>{{ __('skeletons.list_of', ['models' => __('movies.movies')]) }}</h1>
+        <h1>{{ __('Filmek', ['models' => __('movies.movies')]) }}</h1>
         <!-- Error Message -->
         @include('layouts.errors')
 
@@ -23,32 +23,31 @@
             <thead>
                 <tr>
                     <!-- Dynamic Table Headers -->
-                        <th>{{ __('movies.name') }}</th>
-                        <th>{{ __('categories.category') }}</th>
-                        <th>{{ __('categories.category') }}</th>
-                        <th>{{ __('movies.description') }}</th>
-                        <th>{{ __('movies.pic_path') }}</th>
-                        <th>{{ __('movies.length') }}</th>
-                        <th>{{ __('movies.release_date') }}</th>
+                        <th>{{ __('Cim') }}</th>
+                        <th>{{ __('Kategoria') }}</th>
+                        <th>{{ __('Leiras') }}</th>
+                        <th>{{ __('Boritokepe') }}</th>
+                        <th>{{ __('Hossza') }}</th>
+                        <th>{{ __('Megjelenesi') }}</th>
                     <th>{{ __('skeletons.actions') }}</th>
                 </tr>
             </thead>
             <tbody>
                 @foreach ($movies as $movie)
+
                     <tr>
                         <!-- Dynamic Table Columns -->
-                                                <td>{{ $movie->name }}</td>
-                        <td>{{ $movie->category->name ?? '' }}</td>
-                        <td>{{ $movie->description }}</td>
-                        <td>{{ $movie->pic_path }}</td>
-                        <td>{{ $movie->length }}</td>
-                        <td>{{ $movie->release_date }}</td>
+                        <td>{{ $movie['name'] }}</td>
+                        <td>{{ $movie['category_id'] ?? '' }}</td>
+                        <td>{{ $movie['description'] }}</td>
+                        <td>{{ $movie['pic_path'] }}</td>
+                        <td>{{ $movie['length']}}</td>
+                        <td>{{ $movie['release_date'] }}</td>
                         <!-- Action Buttons -->
                         <td>
-                            <a href="{{ route('movies.show', $movie) }}" class="btn">{{ __('skeletons.show') }}</a>
                             
-                            <a href="{{ route('movies.edit', $movie) }}" class="btn">{{ __('skeletons.edit') }}</a>
-                            <form action="{{ route('movies.destroy', $movie) }}" method="POST" style="display:inline-block;">
+                            <a href="{{ route('movies.edit', $movie['id']) }}" class="btn">{{ __('skeletons.edit') }}</a>
+                            <form action="{{ route('movies.destroy', $movie['id']) }}" method="POST" style="display:inline-block;">
                                 @csrf
                                 @method('DELETE')
                                 <button type="submit" class="btn btn-danger">{{ __('skeletons.delete') }}</button>
@@ -62,7 +61,7 @@
 
         <!-- Pagination Links -->
         <div class="pagination">
-            {{ $movies->links() }}
+
         </div>
     </div>
 @endsection

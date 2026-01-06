@@ -16,14 +16,14 @@
         
 
         <!-- Search Field -->
-        @include('layouts.search', ['route' => 'studios.search'])
+        @include('layouts.search', ['action' => 'studios.index'])
 
         <!-- Data Table -->
         <table class="table">
             <thead>
                 <tr>
                     <!-- Dynamic Table Headers -->
-                                            <th>{{ __('studios.name') }}</th>
+                    <th>{{ __('studios.name') }}</th>
                     <th>{{ __('skeletons.actions') }}</th>
                 </tr>
             </thead>
@@ -31,13 +31,12 @@
                 @foreach ($studios as $studio)
                     <tr>
                         <!-- Dynamic Table Columns -->
-                                                <td>{{ $studio->name }}</td>
+                        <td>{{ $studio['name'] }}</td>
                         <!-- Action Buttons -->
                         <td>
-                            <a href="{{ route('studios.show', $studio) }}" class="btn">{{ __('skeletons.show') }}</a>
                             
-                            <a href="{{ route('studios.edit', $studio) }}" class="btn">{{ __('skeletons.edit') }}</a>
-                            <form action="{{ route('studios.destroy', $studio) }}" method="POST" style="display:inline-block;">
+                            <a href="{{ route('studios.edit', $studio['id']) }}" class="btn">{{ __('skeletons.edit') }}</a>
+                            <form action="{{ route('studios.destroy', $studio['id']) }}" method="POST" style="display:inline-block;">
                                 @csrf
                                 @method('DELETE')
                                 <button type="submit" class="btn btn-danger">{{ __('skeletons.delete') }}</button>
@@ -51,7 +50,7 @@
 
         <!-- Pagination Links -->
         <div class="pagination">
-            {{ $studios->links() }}
+
         </div>
     </div>
 @endsection
