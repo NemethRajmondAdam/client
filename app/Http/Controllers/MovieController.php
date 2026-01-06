@@ -36,7 +36,7 @@ class MovieController extends Controller
         } catch (\Exception $e) {
             return redirect()
                 ->route('movies.index')
-                ->with('error', "Nem sikerült betölteni a megyéket: " . $e->getMessage());
+                ->with('error', "Nem sikerült betölteni a filmeket: " . $e->getMessage());
         }
 
     }
@@ -59,7 +59,7 @@ class MovieController extends Controller
             if (!$entity) {
                 return redirect()
                     ->route('movies.index')
-                    ->with('error', "A megye adatai nem érhetők el.");
+                    ->with('error', "A film adatai nem érhetők el.");
             }
 
             return view('movies.show', ['entity' => $entity]);
@@ -67,7 +67,7 @@ class MovieController extends Controller
         } catch (\Exception $e) {
             return redirect()
                 ->route('movies.index')
-                ->with('error', "Nem sikerült betölteni a megye adatait: " . $e->getMessage());
+                ->with('error', "Nem sikerült betölteni a film adatait: " . $e->getMessage());
         }
     }
 
@@ -88,7 +88,7 @@ class MovieController extends Controller
 
             if ($response->failed()) {
                 // Ha az API válaszolt, de hibás státuszkóddal (pl. 422, 403, 500)
-                $message = $response->json('message') ?? 'Nem sikerült létrehozni a megyét.';
+                $message = $response->json('message') ?? 'Nem sikerült létrehozni a filmet.';
                 return redirect()
                     ->route('movies.index')
                     ->with('error', "Hiba: $message");
@@ -96,7 +96,7 @@ class MovieController extends Controller
 
             return redirect()
                 ->route('movies.index')
-                ->with('success', "$name megye sikeresen létrehozva!");
+                ->with('success', "$name film sikeresen létrehozva!");
 
         } catch (\Exception $e) {
             // Hálózati vagy JSON dekódolási hiba
@@ -113,7 +113,7 @@ class MovieController extends Controller
             $response = Http::api()->get("/movies/$id");
 
             if ($response->failed()) {
-                $message = $response->json('message') ?? 'A megye nem található vagy hiba történt.';
+                $message = $response->json('message') ?? 'A film nem található vagy hiba történt.';
                 return redirect()
                     ->route('movies.index')
                     ->with('error', "Hiba: $message");
@@ -125,7 +125,7 @@ class MovieController extends Controller
             if (!$entity) {
                 return redirect()
                     ->route('movies.index')
-                    ->with('error', "A megye adatai nem érhetők el.");
+                    ->with('error', "A film adatai nem érhetők el.");
             }
 
             return view('movies.edit', ['entity' => $entity]);
@@ -133,7 +133,7 @@ class MovieController extends Controller
         } catch (\Exception $e) {
             return redirect()
                 ->route('movies.index')
-                ->with('error', "Nem sikerült betölteni a megye szerkesztő nézetét: " . $e->getMessage());
+                ->with('error', "Nem sikerült betölteni a film szerkesztő nézetét: " . $e->getMessage());
         }
     }
 
@@ -150,7 +150,7 @@ class MovieController extends Controller
             if ($response->successful()) {
                 return redirect()
                     ->route('movies.index')
-                    ->with('success', "$name megye sikeresen frissítve!");
+                    ->with('success', "$name film sikeresen frissítve!");
             }
 
             // Ha nem sikeres, de nem dobott kivételt (pl. 422)
@@ -187,7 +187,7 @@ class MovieController extends Controller
 
             return redirect()
                 ->route('movies.index')
-                ->with('success', "$name megye sikeresen törölve!");
+                ->with('success', "$name film sikeresen törölve!");
 
         } catch (\Exception $e) {
             return redirect()
