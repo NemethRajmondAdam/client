@@ -31,7 +31,20 @@ class MovieController extends Controller
             /*var_dump($entities);
             die;*/
 
-            return view('movies.index', ['movies' => $entities, 'isAuthenticated' => $this->isAuthenticated()]);
+            // API hívás a kategóriákért
+            $response = Http::api()->get('categories');
+
+            if ($response->failed()) {
+                $message = $response->json('message') ?? 'Ismeretlen hiba történt.';
+                return redirect()
+                    ->route('movies.index')
+                    ->with('error', "Hiba történt a kategóriák lekérdezése során: $message");
+            }
+    
+            // Kategóriák kinyerése a helperrel
+            $categories = ResponseHelper::getData($response, 'categories');
+
+            return view('movies.index', ['movies' => $entities,'categories' => $categories, 'isAuthenticated' => $this->isAuthenticated()]);
 
         } catch (\Exception $e) {
             return redirect()
@@ -73,18 +86,66 @@ class MovieController extends Controller
 
     public function create()
     {
-        return view('movies.create');
+        try {
+            // API hívás a kategóriákért
+            $response = Http::api()->get('categories');
+    
+            if ($response->failed()) {
+                $message = $response->json('message') ?? 'Ismeretlen hiba történt.';
+                return redirect()
+                    ->route('movies.index')
+                    ->with('error', "Hiba történt a kategóriák lekérdezése során: $message");
+            }
+    
+            // Kategóriák kinyerése a helperrel
+            $categories = ResponseHelper::getData($response, 'categories');
+
+            $response = Http::api()->get('directors');
+    
+            if ($response->failed()) {
+                $message = $response->json('message') ?? 'Ismeretlen hiba történt.';
+                return redirect()
+                    ->route('movies.index')
+                    ->with('error', "Hiba történt a kategóriák lekérdezése során: $message");
+            }
+
+            $directors = ResponseHelper::getData($response, 'directors');
+    
+            return view('movies.create', [
+                'categories' => $categories,
+                'directors' => $directors,
+                'isAuthenticated' => $this->isAuthenticated()
+            ]);
+    
+        } catch (\Exception $e) {
+            return redirect()
+                ->route('movies.index')
+                ->with('error', 'Nem sikerült betölteni a kategóriákat: ' . $e->getMessage());
+        }
     }
+    
 	
 
     public function store(MovieRequest $request)
     {
+        
         $name = $request->get('name');
+        $category_id = $request->get('category_id');
+        $director_id = $request->get('director_id');
+        $description = $request->get('description');
+        $pic_path = $request->get('pic_path');
+        $length = $request->get('length');
+        $release_date = $request->get('release_date');
+
+
+
 
         try {
             $response = Http::api()
                 ->withToken($this->token)
-                ->post('/movies', ['name' => $name]);
+                ->post('/movies', ['name' => $name, 'categories_id' => $category_id, 'description' => $description, 'pic_path' => $pic_path, 'length' => $length, 'release_date' => $release_date, 'director_id' => $director_id]);
+
+
 
             if ($response->failed()) {
                 // Ha az API válaszolt, de hibás státuszkóddal (pl. 422, 403, 500)

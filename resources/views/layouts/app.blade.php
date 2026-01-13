@@ -11,6 +11,8 @@
     <title>@yield('title', config('app.name'))</title>
     <link rel="stylesheet" href="{{ asset('css/app.css') }}">
     <script src="{{ asset('js/app.js') }}" defer></script>
+    <link rel="stylesheet" href="{{ asset('css/global.css') }}">
+
 </head>
 <body>
     <div id="app">
@@ -21,6 +23,8 @@
         <main>
             @yield('content')
         </main>
+
+
 
         <!-- Footer -->
         <footer>
